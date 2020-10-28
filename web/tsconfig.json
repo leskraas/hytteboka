@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "lib": [
+      "es2015",
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "noImplicitAny": true,
+    "module": "esnext",
+    "target": "es5",
+    "jsx": "react",
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "paths": {
+      "src/*": [
+        "src/*"
+      ],
+      "@sanity/block-content-to-react": [
+        "src/types/blockContent.d.ts"
+      ]
+    },
+    "typeRoots": [
+      "./node_modules/@types"
+    ],
+    "baseUrl": ".",
+
+    "moduleResolution": "node"
+  },
+  "include": [
+    "src",
+    "./node_modules/@sanity/base/types/**/*.ts",
+    "./**/*.ts",
+    "./**/*.tsx"
+  ]
+}
