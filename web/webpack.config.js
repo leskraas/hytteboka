@@ -10,7 +10,8 @@ module.exports = env => {
     const isEnvProduction = env === 'production';
 
     return {
-        mode: isEnvDevelopment ? 'development' : 'production',
+        mode: 'production',
+        devtool: false,
         entry: {
             app: './src/index.tsx',
         },
@@ -71,7 +72,7 @@ module.exports = env => {
             publicPath: '/',
         },
         optimization: {
-            minimize: isEnvProduction,
+            minimize: true,
             moduleIds: 'deterministic',
             runtimeChunk: { name: entrypoint => `runtimechunk~${entrypoint.name}` },
             splitChunks: {
