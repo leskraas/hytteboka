@@ -1,21 +1,24 @@
-const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 
 
 module.exports = env => {
-    const isEnvDevelopment = env === 'development';
+    // const isEnvDevelopment = env === 'development';
     const isEnvProduction = env === 'production';
 
     return {
         mode: 'production',
-        devtool: false,
+        devtool: isEnvProduction ? false : false,
         entry: {
-            app: './src/index.tsx',
+            app: {
+                import: './src/index.tsx',
+                dependOn: "vendor",
+            },
+            vendor: ["react", "react-dom"],
         },
-
 
         resolve: {
             extensions: ['.ts', '.tsx', '.js'],
@@ -43,47 +46,50 @@ module.exports = env => {
             new CopyPlugin({
                 patterns: [
                     { from: 'public/manifest.json', to: '.' },
+                    { from: 'public/_redirects', to: '.' },
                     { from: 'public/images', to: '.' }
                 ],
             }),
             new HtmlWebpackPlugin({
                 template: './public/index.html',
                 minify: 'auto',
+                inlineSource: 'runtime~.+\\.js',
             }),
-            new WorkboxPlugin.GenerateSW({
+            isEnvProduction ? new WorkboxPlugin.GenerateSW({
                 cacheId: 'fagertun_pwa',
                 exclude: [/\.(?:png|jpg|jpeg|svg)$/],
                 skipWaiting: true,
                 runtimeCaching: [{
-                        urlPattern: /\.(?:png|jpg|jpeg|svg)$/,
-                        handler: 'CacheFirst',
-                        options: {
-                            cacheName: 'images',
-                            expiration: {
-                                maxEntries: 50,
-                            },
+                    urlPattern: /\.(?:png|jpg|jpeg|svg)$/,
+                    handler: 'CacheFirst',
+                    options: {
+                        cacheName: 'images',
+                        expiration: {
+                            maxEntries: 50,
                         },
-                    }],
-            })
-        ],
+                    },
+                }],
+            }) : false
+        ].filter(Boolean),
         output: {
-            filename: '[name].bundle.[contenthash].js',
+            filename: '[name].bundle.[chunkhash].js',
             path: path.resolve(__dirname, 'dist'),
             publicPath: '/',
         },
         optimization: {
-            minimize: true,
+            minimize: isEnvProduction,
             moduleIds: 'deterministic',
+            // runtimeChunk: true,
             runtimeChunk: { name: entrypoint => `runtimechunk~${entrypoint.name}` },
             splitChunks: {
                 chunks: 'all',
-                cacheGroups: {
-                    vendor: {
-                        test: /[\\/]node_modules[\\/]/,
-                        name: 'vendors',
-                        chunks: 'all',
-                    },
-                },
+                // cacheGroups: {
+                //     vendor: {
+                        // test: /[\\/]node_modules[\\/]/,
+                        // name: 'vendors',
+                        // chunks: 'all',
+                    // },
+                // },
             },
         },
     }

@@ -5,6 +5,7 @@ import {IUserGuide} from "../types/sanity";
 import {urlFor} from "../utils/imageUrlBuilder";
 import {Grid, Typography} from '@material-ui/core';
 import styled from "styled-components";
+import {FadeIn} from "../utils/FadeIn";
 
 const Card = lazy(() => import("./Card").then(({Card}) => ({default: Card})));
 
@@ -32,7 +33,7 @@ export const AllUserGuide: React.FC = () => {
 
     }, [])
     return (
-        <>
+        <FadeIn>
             <Typography gutterBottom variant="h1" component="h1">
                 Brukermanualer
             </Typography>
@@ -52,7 +53,7 @@ export const AllUserGuide: React.FC = () => {
                         </Grid>
                 )}
             </StyledGrid>
-        </>
+        </FadeIn>
     );
 };
 
@@ -61,3 +62,4 @@ const StyledGrid = styled(Grid)`
   //align-content: center;
   //justify-content: center;
 `;
+

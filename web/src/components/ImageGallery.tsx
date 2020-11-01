@@ -10,6 +10,7 @@ import {IImage} from "../types/sanity";
 import {nanoid} from "nanoid";
 import {usePrevious} from "../utils/hooks/usePrevious";
 import {SanityImage} from "../utils/SanityImage";
+import {FadeIn} from "../utils/FadeIn";
 
 
 const imageGalleryQuery = groq`
@@ -93,28 +94,30 @@ export const ImageGallery: React.FC = () => {
         }
     };
     return (
-        <ImageGalleryWrapper>
-            <Typography gutterBottom variant="h1" component="h1">
-                Bildegalleri
-            </Typography>
-            <ImageWrapper>
-                {imageGallery &&
-                imageGallery.map((image) => (
-                    <Image key={image._key}>
-                        <SanityImage image={image}/>
-                    </Image>
-                ))
-                }
-            </ImageWrapper>
-            <input ref={inputRef} type="file" id="upload-button" accept="image/*" onChange={handleChange}
-                   style={{display: "none"}}/>
-            <ButtonProgress>
-                <StyledIconButton aria-label="Legg til bilde" onClick={handleUpload}>
-                    <StyledAddAPhotoRounded/>
-                </StyledIconButton>
-                {uploadingImage && <StyledCircularProgress size={68}/>}
-            </ButtonProgress>
-        </ImageGalleryWrapper>
+        <FadeIn>
+            <ImageGalleryWrapper>
+                <Typography gutterBottom variant="h1" component="h1">
+                    Bildegalleri
+                </Typography>
+                <ImageWrapper>
+                    {imageGallery &&
+                    imageGallery.map((image) => (
+                        <Image key={image._key}>
+                            <SanityImage image={image}/>
+                        </Image>
+                    ))
+                    }
+                </ImageWrapper>
+                <input ref={inputRef} type="file" id="upload-button" accept="image/*" onChange={handleChange}
+                       style={{display: "none"}}/>
+                <ButtonProgress>
+                    <StyledIconButton aria-label="Legg til bilde" onClick={handleUpload}>
+                        <StyledAddAPhotoRounded/>
+                    </StyledIconButton>
+                    {uploadingImage && <StyledCircularProgress size={68}/>}
+                </ButtonProgress>
+            </ImageGalleryWrapper>
+        </FadeIn>
     );
 };
 

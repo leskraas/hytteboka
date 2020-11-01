@@ -1,18 +1,18 @@
-import React, {lazy, Suspense} from 'react';
+import React from 'react';
 import {Navbar as NavbarComp} from "./components/Navbar";
 import styled from "styled-components";
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
-// import {AllUserGuide} from "./components/AllUserGuide";
-// import {OneUserGuide} from "./components/OneUserGuide";
+import {AllUserGuide} from "./components/AllUserGuide";
+import {OneUserGuide} from "./components/OneUserGuide";
 import {MainMargin, NavHeight} from "./utils/dimentions";
 import {createMuiTheme, ThemeProvider} from "@material-ui/core";
 import {colors} from "./utils/colors";
 import {ImageGallery} from "./components/ImageGallery";
-// import {Page} from "./components/Page";
+import {Page} from "./components/Page";
 
-const Page = lazy(() => import("./components/Page").then(({Page}) => ({default: Page})));
-const AllUserGuide = lazy(() => import("./components/AllUserGuide").then(({AllUserGuide}) => ({default: AllUserGuide})));
-const OneUserGuide = lazy(() => import("./components/OneUserGuide").then(({OneUserGuide}) => ({default: OneUserGuide})));
+// const Page = lazy(() => import("./components/Page").then(({Page}) => ({default: Page})));
+// const AllUserGuide = lazy(() => import("./components/AllUserGuide").then(({AllUserGuide}) => ({default: AllUserGuide})));
+// const OneUserGuide = lazy(() => import("./components/OneUserGuide").then(({OneUserGuide}) => ({default: OneUserGuide})));
 
 
 const defaultTheme = createMuiTheme({
@@ -77,16 +77,16 @@ const theme = {
 
 // theme = responsiveFontSizes(theme);
 
-const SanityImageFallback = () => (
-    <ImagePlaceHolder/>
-)
+// const SanityImageFallback = () => (
+//     <ImagePlaceHolder/>
+// )
 
-const ImagePlaceHolder = styled.div`
-  background-color: lightgray;
-  height: 300px;
-  width: 100vw;
-  margin: -${MainMargin} -${MainMargin} 2rem;
-`;
+// const ImagePlaceHolder = styled.div`
+//   background-color: lightgray;
+//   height: 300px;
+//   width: 100vw;
+//   margin: -${MainMargin} -${MainMargin} 2rem;
+// `;
 
 export const App = () => {
     return (
@@ -94,14 +94,14 @@ export const App = () => {
             <Navbar/>
             <ThemeProvider theme={theme}>
                 <Content>
-                    <Suspense fallback={<SanityImageFallback/>}>
-                        <Switch>
-                            <Route path={'/brukermanual/'} exact component={AllUserGuide}/>
-                            <Route path={'/brukermanual/:slug'} component={OneUserGuide}/>
-                            <Route path={'/bildegalleri/'} component={ImageGallery}/>
-                            <Route component={Page}/>
-                        </Switch>
-                    </Suspense>
+                    {/*<Suspense fallback={<></>}>*/}
+                    <Switch>
+                        <Route path={'/brukermanual/:slug'} component={OneUserGuide}/>
+                        <Route path={'/brukermanual/'} component={AllUserGuide}/>
+                        <Route path={'/bildegalleri/'} component={ImageGallery}/>
+                        <Route component={Page}/>
+                    </Switch>
+                    {/*</Suspense>*/}
                 </Content>
             </ThemeProvider>
         </BrowserRouter>

@@ -7,6 +7,7 @@ import {Typography} from "@material-ui/core";
 import {MainMargin} from "../utils/dimentions";
 import {colors} from "../utils/colors";
 import {SanityImage} from "../utils/SanityImage";
+import {FadeIn} from "../utils/FadeIn";
 
 interface ParamTypes {
     slug: string
@@ -43,8 +44,12 @@ export const OneUserGuide: React.FC = () => {
             .catch(console.error);
 
     }, [slug]);
+    // if (!userGuideData){
+    //     return <div>spinner</div>
+    // }
+
     return (
-        <>
+        <FadeIn>
             <Typography gutterBottom variant="h1" component="h1">
                 {userGuideData?.title}
             </Typography>
@@ -70,7 +75,7 @@ export const OneUserGuide: React.FC = () => {
                     )
                 }
             </GuideSteps>
-        </>
+        </FadeIn>
     );
 };
 

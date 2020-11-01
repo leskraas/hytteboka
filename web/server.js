@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
@@ -17,6 +18,14 @@ app.use(webpackDevMiddleware(compiler, {
     publicPath: config.output.publicPath,
     writeToDisk: true,
 }));
+
+app.get('/*', function(req, res) {
+    res.sendFile(path.resolve(__dirname, 'dist/index.html'), function(err) {
+        if (err) {
+            res.status(500).send(err)
+        }
+    })
+})
 
 // Serve the files on port 3000.
 app.listen(3000, function () {
