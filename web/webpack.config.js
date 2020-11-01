@@ -57,7 +57,7 @@ module.exports = env => {
             }),
             isEnvProduction ? new WorkboxPlugin.GenerateSW({
                 cacheId: 'fagertun_pwa',
-                exclude: [/\.(?:png|jpg|jpeg|svg)$/],
+                exclude: [/\.(?:png|jpg|jpeg|svg)$/, /_redirects/],
                 skipWaiting: true,
                 runtimeCaching: [{
                     urlPattern: /\.(?:png|jpg|jpeg|svg)$/,
