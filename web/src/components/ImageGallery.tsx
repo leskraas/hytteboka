@@ -127,7 +127,7 @@ export const ImageGallery: React.FC = () => {
             {fullViewImage &&
             <BackDrop onClick={() => setFullViewImage(undefined)}>
                 <FullWidthImage>
-                    <SanityImage image={fullViewImage} quality={100}/>
+                    <SanityImage image={fullViewImage} quality={100} width={700}/>
                 </FullWidthImage>
             </BackDrop>
             }
