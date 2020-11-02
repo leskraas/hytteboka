@@ -39,9 +39,6 @@ export const ImageGallery: React.FC = () => {
     const prevImage = usePrevious(image);
 
     useEffect(() => {
-        if (image !== "" && image !== prevImage) {
-            sanityFileUpload(image)
-        }
         if (uploaded) {
             sanityClient.fetch(imageGalleryQuery)
                 .then((data: { images: IImage[] }) => {
@@ -49,6 +46,9 @@ export const ImageGallery: React.FC = () => {
                 })
                 .catch(console.error);
             setUploaded(false);
+        }
+        if (image !== "" && image !== prevImage) {
+            sanityFileUpload(image)
         }
     }, [image, prevImage, uploaded])
 

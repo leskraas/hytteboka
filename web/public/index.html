@@ -33,7 +33,6 @@
     <div class="navbar"></div>
 </div>
 <script>
-    console.log('env', '%NODE_ENV%');
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('/service-worker.js');
