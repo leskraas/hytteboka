@@ -74,8 +74,10 @@ module.exports = env => {
                     handler: 'StaleWhileRevalidate',
                     options: {
                         cacheName: 'sanity',
-                        maxAgeSeconds: 3 * 24 * 60 * 60,
-                        purgeOnQuotaError: true,
+                        expiration: {
+                            maxAgeSeconds: 3 * 24 * 60 * 60,
+                            purgeOnQuotaError: true,
+                        }
                     },
                 }],
             }) : false
