@@ -22,7 +22,10 @@ interface IProps {
 export const Card = (props: IProps) => {
     const history = useHistory();
     const handleClick = () => {
-        history.push(props.slug);
+        history.push({
+            pathname: props.slug,
+            state: {prevPath: location.pathname}
+        });
     }
     return (
         <StyledCard>
@@ -33,7 +36,7 @@ export const Card = (props: IProps) => {
                     alt=" "
                     src={props.image}
                 />
-                <CardContent >
+                <CardContent>
                     <Typography gutterBottom variant="h4" component="h2">
                         {props.title}
                     </Typography>

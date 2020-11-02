@@ -1,45 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="description" content="For Fagertuns gjester og eiere"/>
-        <link rel="icon" sizes="40x40" href="/logo.svg" />
-        <link rel="manifest" href="/manifest.json" crossorigin="use-credentials"/>
-        <meta name="theme-color" content="#000000" />
-        <link rel="apple-touch-icon" type="image/png" href="/logo-apple-touch.png" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!--        <style>-->
-<!--            @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400&display=swap');-->
-<!--        </style>-->
-        <title>Fagertun</title>
-        <style>
-            html, body{
-                margin: 0;
-            }
-            .navbar {
-                height: 70px;
-                box-shadow: rgba(34, 34, 34, 0.2) 0px 0px 10px 2px;
-                width: 100vw;
-                position: fixed;
-                bottom: 0px;
-                left: 0px;
-                background-color: rgb(255, 255, 255);
-                display: flex;
-                z-index: 2;
-            }
-        </style>
-    </head>
-    <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="For Fagertuns gjester og eiere"/>
+    <link rel="icon" type="image/png" sizes="40x40" href="/logo.png"/>
+    <link rel="manifest" href="/manifest.json" crossorigin="use-credentials"/>
+    <meta name="theme-color" content="#000000"/>
+    <link rel="apple-touch-icon" type="image/png" href="/logo-apple-touch.png"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fagertun</title>
+    <style>
+        html, body {
+            margin: 0;
+        }
+
+        .navbar {
+            height: 70px;
+            box-shadow: rgba(34, 34, 34, 0.2) 0px 0px 10px 2px;
+            width: 100vw;
+            position: fixed;
+            bottom: 0px;
+            left: 0px;
+            background-color: rgb(255, 255, 255);
+            display: flex;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+<noscript>You need to enable JavaScript to run this app.</noscript>
+<div id="root">
     <div class="navbar"></div>
-    </div>
-        <script>
-            if ('serviceWorker' in navigator) {
-                window.addEventListener('load', () => {
-                    navigator.serviceWorker.register('/service-worker.js');
-                });
-            }
-        </script>
-    </body>
+</div>
+<script>
+    console.log('env', '%NODE_ENV%');
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/service-worker.js');
+        });
+    }
+</script>
+</body>
 </html>

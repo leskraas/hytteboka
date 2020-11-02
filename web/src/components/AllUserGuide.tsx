@@ -42,7 +42,7 @@ export const AllUserGuide: React.FC = () => {
                 allGuideData.map(
                     (userGuide: IUserGuide, index: number) =>
                         <Grid key={`userGuide-${index}`} item xs={"auto"}>
-                            <Suspense fallback={'Hei'}>
+                            <Suspense fallback={''}>
                                 <Card title={userGuide.title}
                                       description={userGuide.description}
                                       image={urlFor(userGuide.mainImage).fit('min')

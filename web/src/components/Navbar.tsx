@@ -1,28 +1,33 @@
 import React from 'react';
 import styled, {css} from 'styled-components';
 import {NavLink} from "react-router-dom";
-import {NavHeight} from "../utils/dimentions";
 import {colors} from "../utils/colors";
 import {Logo} from "../images/Logo";
 import {IconButton} from "@material-ui/core";
 import {AssignmentRounded, PhotoLibraryRounded} from "@material-ui/icons";
 import {useApplePwaDetection} from "../utils/ApplePWADetection";
+import {useLocation} from "react-router";
 
-export const Navbar: React.FC = () => {
+interface Props {
+    className?: string
+}
+
+export const Navbar: React.FC<Props> = ({className}) => {
+    const location = useLocation();
     const isApplePwa = useApplePwaDetection()
 
     return (
-        <NavbarContainer>
-            <LogoContainer exact to={'/'}>
+        <NavbarContainer className={className}>
+            <LogoContainer exact to={{pathname: '/', state: {prevPath: location.pathname}}}>
                 <Logo/>
             </LogoContainer>
             <Menu isApplePwa={isApplePwa}>
-                <MenuItem to={'/brukermanual/'}>
+                <MenuItem to={{pathname: '/brukermanual/', state: {prevPath: location.pathname}}}>
                     <StyledIconButton aria-label="Bruksanvisning">
                         <StyledAssignmentRounded/>
                     </StyledIconButton>
                 </MenuItem>
-                <MenuItem to={'/bildegalleri/'}>
+                <MenuItem to={{pathname: '/bildegalleri/', state: {prevPath: location.pathname}}}>
                     <StyledIconButton aria-label="Bruker manual">
                         <StyledPhotoLibraryRounded/>
                     </StyledIconButton></MenuItem>
@@ -33,15 +38,9 @@ export const Navbar: React.FC = () => {
 
 
 const NavbarContainer = styled.div`
-  height: ${NavHeight};
   box-shadow: 0 0 10px 2px ${colors.shadowCore} ;
-  width: 100vw;
-  position: fixed;
-  bottom: 0;
-  left: 0;
   background-color: ${colors.navbarBackground};
   display: flex;
-  z-index: 2;
 `;
 
 const LogoContainer = styled(NavLink)`

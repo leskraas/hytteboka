@@ -4,7 +4,7 @@ import styled from "styled-components";
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import {AllUserGuide} from "./components/AllUserGuide";
 import {OneUserGuide} from "./components/OneUserGuide";
-import {MainMargin, NavHeight} from "./utils/dimentions";
+import {ContentHeight, ContentWidth, MainMargin, NavHeight} from "./utils/dimentions";
 import {createMuiTheme, ThemeProvider} from "@material-ui/core";
 import {colors} from "./utils/colors";
 import {ImageGallery} from "./components/ImageGallery";
@@ -111,12 +111,22 @@ export const App = () => {
 const Content = styled.div`
   position: relative;
   top: 0;
-  padding: ${MainMargin} ${MainMargin} calc(${MainMargin} + ${NavHeight});
-  min-height: calc(100vh - ${NavHeight} - 2*${MainMargin});
+  left: 0;
+  padding: ${MainMargin};
+  width: ${ContentWidth};
+  height: ${ContentHeight};
+  overflow-x: hidden;
+  overflow-y: scroll;
+  //min-height: 100%;
+  //min-height: calc(100vh - ${NavHeight} - 2*${MainMargin});
 `
 
 const Navbar = styled(NavbarComp)`
   position: fixed;
   bottom: 0;
+  left: 0;
+  width: 100vw;
+  z-index: 1;
+  height: ${NavHeight};
 `
 

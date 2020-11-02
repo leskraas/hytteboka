@@ -10,6 +10,7 @@ export interface UserGuideStep {
 
 export interface IImage {
     _type: 'image';
+    _id?: string;
     _key: string;
     asset: Asset;
     crop?: Crop;

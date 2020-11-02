@@ -5,6 +5,7 @@ import groq from 'groq';
 import {IPage} from "../types/sanity";
 import {TextSection} from "./TextSection";
 import {Hero} from "./Hero";
+import {FadeIn} from "../utils/FadeIn";
 
 
 const pageQuery = groq`
@@ -38,7 +39,7 @@ export const Page: React.FC = () => {
 
     }, [slug]);
     return (
-        <div>
+        <FadeIn>
             {pageData?.content.map((content) => {
                     switch (content._type) {
                         case "hero":
@@ -49,6 +50,6 @@ export const Page: React.FC = () => {
                     }
                 }
             )}
-        </div>
+        </FadeIn>
     );
 };

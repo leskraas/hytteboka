@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {CircularProgress, IconButton, Typography} from "@material-ui/core";
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 import {AddAPhotoRounded} from "@material-ui/icons";
 import sanityClient from "../client";
 import {colors} from "../utils/colors";
@@ -27,26 +27,28 @@ const imageGalleryQuery = groq`
     }
 `
 
+
 export const ImageGallery: React.FC = () => {
     const [image, setImage] = useState("");
-    const [imageGallery, setImageGallery] = useState<IImage[]>();
-    const [uploadingImage, setUploadingImage] = useState<boolean>(false)
-    const [uploaded, setUploaded] = useState<boolean>(true)
+    const [fullViewImage, setFullViewImage] = useState<IImage>(undefined);
+    const [imageGallery, setImageGallery] = useState<IImage[]>([]);
+    const [uploadingImage, setUploadingImage] = useState<boolean>(false);
+    const [uploaded, setUploaded] = useState<boolean>(true);
     const inputRef = React.useRef<HTMLInputElement>(null);
 
     const prevImage = usePrevious(image);
 
     useEffect(() => {
+        if (image !== "" && image !== prevImage) {
+            sanityFileUpload(image)
+        }
         if (uploaded) {
-            sanityClient.fetch(imageGalleryQuery,)
+            sanityClient.fetch(imageGalleryQuery)
                 .then((data: { images: IImage[] }) => {
                     setImageGallery(data.images)
                 })
                 .catch(console.error);
             setUploaded(false);
-        }
-        if (image !== "" && image !== prevImage) {
-            sanityFileUpload(image)
         }
     }, [image, prevImage, uploaded])
 
@@ -81,7 +83,6 @@ export const ImageGallery: React.FC = () => {
         )
     }
 
-
     const handleUpload = async (e: any) => {
         e.preventDefault();
         inputRef.current !== null && inputRef.current.click()
@@ -94,30 +95,43 @@ export const ImageGallery: React.FC = () => {
         }
     };
     return (
-        <FadeIn>
-            <ImageGalleryWrapper>
-                <Typography gutterBottom variant="h1" component="h1">
-                    Bildegalleri
-                </Typography>
-                <ImageWrapper>
-                    {imageGallery &&
-                    imageGallery.map((image) => (
-                        <Image key={image._key}>
-                            <SanityImage image={image}/>
-                        </Image>
-                    ))
-                    }
-                </ImageWrapper>
-                <input ref={inputRef} type="file" id="upload-button" accept="image/*" onChange={handleChange}
-                       style={{display: "none"}}/>
-                <ButtonProgress>
-                    <StyledIconButton aria-label="Legg til bilde" onClick={handleUpload}>
-                        <StyledAddAPhotoRounded/>
-                    </StyledIconButton>
-                    {uploadingImage && <StyledCircularProgress size={68}/>}
-                </ButtonProgress>
-            </ImageGalleryWrapper>
-        </FadeIn>
+        <>
+            <FadeIn>
+                <ImageGalleryWrapper>
+                    <Typography gutterBottom variant="h1" component="h1">
+                        Bildegalleri
+                    </Typography>
+                    <ImageWrapper>
+                        {imageGallery.length > 0 &&
+                        imageGallery.map((image) => (
+                            <Image key={image._key}
+                                   onClick={() =>
+                                       fullViewImage === image ?
+                                           setFullViewImage(undefined) :
+                                           setFullViewImage(image)}>
+                                <SanityImage image={image}/>
+                            </Image>
+                        ))
+                        }
+                    </ImageWrapper>
+                    <input ref={inputRef} type="file" id="upload-button" accept="image/*" onChange={handleChange}
+                           style={{display: "none"}}/>
+                </ImageGalleryWrapper>
+            </FadeIn>
+            <ButtonProgress>
+                <StyledIconButton aria-label="Legg til bilde" onClick={handleUpload}>
+                    <StyledAddAPhotoRounded/>
+                </StyledIconButton>
+                {uploadingImage && <StyledCircularProgress size={68}/>}
+            </ButtonProgress>
+            {fullViewImage &&
+            <BackDrop onClick={() => setFullViewImage(undefined)}>
+                <FullWidthImage>
+                    <SanityImage image={fullViewImage} quality={100}/>
+                </FullWidthImage>
+            </BackDrop>
+            }
+        </>
     );
 };
 
@@ -144,7 +158,6 @@ const StyledCircularProgress = styled(CircularProgress)`
 
 const StyledIconButton = styled(IconButton)`
     && {
-        z-index: 3;
         box-shadow: 0 5px 5px 0 ${colors.shadowCore};
         transition: box-shadow ease-in-out .2s;
         background-image: ${colors.linearGradeBlue};
@@ -177,5 +190,64 @@ const Image = styled.div`
       max-width: 50%;
       width: 100%;
       object-fit: cover;
-  }
 `;
+
+const BackDrop = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${colors.grey900Transparent};
+  z-index: 2;
+`;
+
+
+const fadeInKeyframes = css`
+    0% { 
+    opacity: 0;
+    transform: scale(0);
+     }
+    10% { 
+    opacity: 0;
+    transform: scale(0);
+     }
+    to   { 
+    opacity: 1;
+    transform: scale(1);
+      }
+`;
+
+const FullWidthImage = styled.div`
+  width: 100%;
+  height: auto;
+    -webkit-animation: fadein .6s; /* Safari, Chrome and Opera > 12.1 */
+    -moz-animation: fadein .6s; /* Firefox < 16 */
+    -o-animation: fadein .6s; /* Opera < 12.1 */
+    animation: fadein .6s; /* Safari, Chrome and Opera > 12.1 */
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+    ${fadeInKeyframes}
+};
+   
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+    ${fadeInKeyframes}
+};
+
+/* Opera < 12.1 */
+@-o-keyframes fadein {
+    ${fadeInKeyframes}
+};
+
+@keyframes fadein {
+    ${fadeInKeyframes}
+};
+
+
+`;
+
+

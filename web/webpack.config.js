@@ -6,12 +6,12 @@ const WorkboxPlugin = require('workbox-webpack-plugin');
 
 
 module.exports = env => {
-    // const isEnvDevelopment = env === 'development';
+    const isEnvDevelopment = env === 'development';
     const isEnvProduction = env === 'production';
 
     return {
-        mode: 'production',
-        devtool: isEnvProduction ? false : false,
+        mode: isEnvDevelopment ? 'development' : 'production',
+        devtool: isEnvDevelopment ? 'inline-source-map' : false,
         entry: {
             app: {
                 import: './src/index.tsx',
@@ -67,6 +67,15 @@ module.exports = env => {
                         expiration: {
                             maxEntries: 50,
                         },
+                    }
+                },
+                    {
+                    urlPattern: new RegExp('^https://n45k2lw1.api.sanity.io/*'),
+                    handler: 'StaleWhileRevalidate',
+                    options: {
+                        cacheName: 'sanity',
+                        maxAgeSeconds: 3 * 24 * 60 * 60,
+                        purgeOnQuotaError: true,
                     },
                 }],
             }) : false
