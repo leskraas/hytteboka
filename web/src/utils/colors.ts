@@ -4,6 +4,7 @@
 export const colorDefinitions = {
     shadowBlue: 'rgba(74,116,161,0.29)',
     grey900Transparent: 'rgba(34,34,34, .2)',
+    grey900Transparent8: 'rgba(34,34,34, .8)',
 
     // Grey
     grey100: '#fbfbfb',
@@ -27,12 +28,12 @@ export const colorDefinitions = {
     green800: '#014f26',
 
     // Red
-    red100: '#fff5f9',
-    red200: '#ffe0eb',
-    red300: '#ff6699',
-    red400: '#ff3377',
-    red500: '#e4175c',
-    red600: '#bf134d',
+    red100: '#fff5f5',
+    red200: '#ffe0e0',
+    red300: '#ff6666',
+    red400: '#ff3333',
+    red500: '#e41717',
+    red600: '#bf1313',
 
     // Orange
     orange100: '#fff7eb',
@@ -73,7 +74,7 @@ export const colorAliases = {
     darkGrey: colorDefinitions.grey400,
     black: colorDefinitions.grey900,
     green: colorDefinitions.green500,
-    red: colorDefinitions.red500,
+    red: colorDefinitions.red400,
     orange: colorDefinitions.orange500,
     // blue: colorDefinitions.blue500,
 };
