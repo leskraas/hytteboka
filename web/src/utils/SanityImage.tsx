@@ -44,4 +44,6 @@ const Image = styled.img<ImageProps>`
   height: ${props => props.height ? props.height + 'px' : '100%'};
   width: 100%;
   object-fit: cover;
+  max-width: 100vw;
+  max-height: 100vh;
 `;

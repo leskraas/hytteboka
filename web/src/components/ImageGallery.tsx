@@ -268,10 +268,16 @@ const fadeInKeyframes = css`
       }
 `;
 
+
 const FullWidthImage = styled.div`
   width: 100%;
   height: auto;
   position: relative;
+  img {
+    object-fit: contain;
+    max-width: calc(100vw - 48px);
+    max-height: calc(100vh - 48px);
+  }
     -webkit-animation: fadein .6s; /* Safari, Chrome and Opera > 12.1 */
     -moz-animation: fadein .6s; /* Firefox < 16 */
     -o-animation: fadein .6s; /* Opera < 12.1 */
@@ -343,3 +349,4 @@ const CloseImage = styled.div`
   height: 100%;
   cursor: pointer;
 `;
+
