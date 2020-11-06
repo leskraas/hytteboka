@@ -163,6 +163,8 @@ export const ImageGallery: React.FC = () => {
                     <ImageTools onClick={handleToolClick}>
                         <MoreVertRounded/>
                     </ImageTools>
+                    <CloseImage onClick={handleCloseClick} ref={refCloseButton}/>
+                    <ImageToolbar>
                     {visibleToolbar &&
                     <Toolbar>
                         <IconButton aria-label="Fjern" onClick={() => sanityRemoveFile(fullViewImage)}>
@@ -173,8 +175,8 @@ export const ImageGallery: React.FC = () => {
                         </IconButton>
                     </Toolbar>
                     }
-                    <CloseImage onClick={handleCloseClick} ref={refCloseButton}/>
                     <SanityImage image={fullViewImage} quality={100} width={700}/>
+                    </ImageToolbar>
                 </FullWidthImage>
             </BackDrop>
             }
@@ -275,8 +277,6 @@ const FullWidthImage = styled.div`
   position: relative;
   img {
     object-fit: contain;
-    max-width: calc(100vw - 48px);
-    max-height: calc(100vh - 48px);
   }
     -webkit-animation: fadein .6s; /* Safari, Chrome and Opera > 12.1 */
     -moz-animation: fadein .6s; /* Firefox < 16 */
@@ -319,6 +319,12 @@ const ImageTools = styled(IconButton)`
   }
 `;
 
+const ImageToolbar = styled.div`
+    max-height: calc(100vh - 48px);
+    width: 100%;
+    height: 100%;
+`;
+
 const Toolbar = styled.div`
     background-color: lightgray;
     border-radius: 2rem;
@@ -326,7 +332,7 @@ const Toolbar = styled.div`
     flex-direction: column;
     z-index: 9;
     position:absolute;
-    top: 0;
+    top: 5px;
     right: 10px;
     transform: translate(0, 26px);
     box-shadow: 0 5px 5px 0 ${colors.shadowCore};
