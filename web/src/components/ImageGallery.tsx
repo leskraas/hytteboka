@@ -35,7 +35,6 @@ export const ImageGallery: React.FC = () => {
     const [imageGallery, setImageGallery] = useState<IImage[]>([]);
     const [uploadingImage, setUploadingImage] = useState<boolean>(false);
     const [uploadingImageFail, setUploadingImageFail] = useState<boolean>(false);
-    const [cacheBust, setCacheBust] = useState<boolean>(false);
     const [uploaded, setUploaded] = useState<boolean>(true);
     const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -43,9 +42,6 @@ export const ImageGallery: React.FC = () => {
     const prevImage = usePrevious(image);
 
     useEffect(() => {
-        if (cacheBust){
-            setCacheBust(false);
-        }
         if (image !== "" && image !== prevImage) {
             sanityFileUpload(image)
         }
@@ -59,9 +55,8 @@ export const ImageGallery: React.FC = () => {
                     console.log('error', err);
                 });
             setUploaded(false);
-            setCacheBust(true);
         }
-    }, [image, prevImage, uploaded, cacheBust])
+    }, [image, prevImage, uploaded])
 
     const handleCloseClick = (e: React.MouseEvent<HTMLInputElement>) => {
         if (e.target === refCloseButton.current) {

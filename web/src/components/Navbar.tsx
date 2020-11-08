@@ -18,7 +18,7 @@ export const Navbar: React.FC<Props> = ({className}) => {
 
     return (
         <NavbarContainer className={className}>
-            <LogoContainer exact to={{pathname: '/', state: {prevPath: location.pathname}}}>
+            <LogoContainer isApplePwa={isApplePwa} exact to={{pathname: '/', state: {prevPath: location.pathname}}}>
                 <Logo/>
             </LogoContainer>
             <Menu isApplePwa={isApplePwa}>
@@ -43,10 +43,11 @@ const NavbarContainer = styled.div`
   display: flex;
 `;
 
-const LogoContainer = styled(NavLink)`
-    margin: 1.5rem 1rem;
+const LogoContainer = styled(NavLink)<MenuProps>`
+    margin-bottom: ${props => props.isApplePwa ? '2.5rem' : '2rem'};
     position: absolute;
-    left: 2rem;
+    left: 3rem;
+    bottom: 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -67,7 +68,7 @@ const Menu = styled.nav<MenuProps>`
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding-bottom: ${props => props.isApplePwa ? '1.5rem' : '1rem'};
+  padding-bottom: ${props => props.isApplePwa ? '2.5rem' : '1rem'};
 
 `;
 
