@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {CircularProgress, IconButton, Typography} from "@material-ui/core";
+import {Button, CircularProgress, IconButton, Modal, Typography} from "@material-ui/core";
 import styled, {css} from "styled-components";
 import {AddAPhotoRounded, DeleteRounded, MoreVertRounded} from "@material-ui/icons";
 import sanityClient from "../client";
@@ -34,6 +34,8 @@ export const ImageGallery: React.FC = () => {
     const [fullViewImage, setFullViewImage] = useState<IImage>(undefined);
     const [imageGallery, setImageGallery] = useState<IImage[]>([]);
     const [uploadingImage, setUploadingImage] = useState<boolean>(false);
+    const [uploadingImageFail, setUploadingImageFail] = useState<boolean>(false);
+    const [cacheBust, setCacheBust] = useState<boolean>(false);
     const [uploaded, setUploaded] = useState<boolean>(true);
     const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -41,18 +43,25 @@ export const ImageGallery: React.FC = () => {
     const prevImage = usePrevious(image);
 
     useEffect(() => {
+        if (cacheBust){
+            setCacheBust(false);
+        }
+        if (image !== "" && image !== prevImage) {
+            sanityFileUpload(image)
+        }
         if (uploaded) {
             sanityClient.fetch(imageGalleryQuery)
                 .then((data: { images: IImage[] }) => {
                     setImageGallery(data.images)
                 })
-                .catch(console.error);
+                .catch((err) => {
+                    setUploadingImageFail(true);
+                    console.log('error', err);
+                });
             setUploaded(false);
+            setCacheBust(true);
         }
-        if (image !== "" && image !== prevImage) {
-            sanityFileUpload(image)
-        }
-    }, [image, prevImage, uploaded])
+    }, [image, prevImage, uploaded, cacheBust])
 
     const handleCloseClick = (e: React.MouseEvent<HTMLInputElement>) => {
         if (e.target === refCloseButton.current) {
@@ -73,7 +82,10 @@ export const ImageGallery: React.FC = () => {
             setFullViewImage(undefined);
             setVisibleToolbar(false);
             setUploaded(true);
-        }).catch(err => console.log('gikk ikke fjerne', err))
+        }).catch((err) => {
+            setUploadingImageFail(true);
+            console.log('error', err);
+        });
     }
 
     const sanityDeleteFile = (imageFile: IImage) => {
@@ -82,7 +94,10 @@ export const ImageGallery: React.FC = () => {
             setVisibleToolbar(false);
             setUploaded(true);
             sanityClient.delete(imageFile.asset._id).catch(err => console.log('gikk ikke å slette', err))
-        }).catch(err => console.log('gikk ikke fjerne', err))
+        }).catch((err) => {
+            setUploadingImageFail(true);
+            console.log('error', err);
+        });
     }
 
     const sanityFileUpload = (file: any) => {
@@ -111,7 +126,7 @@ export const ImageGallery: React.FC = () => {
             }).catch(() => {
                 setUploadingImage(false);
                 setUploaded(false);
-                alert('Noe gikk galt!!!');
+                setUploadingImageFail(true);
             }
         )
     }
@@ -151,6 +166,16 @@ export const ImageGallery: React.FC = () => {
                            style={{display: "none"}}/>
                 </ImageGalleryWrapper>
             </FadeIn>
+            <Modal
+                open={uploadingImageFail}
+                onClose={() => setUploadingImageFail(false)}
+            >
+                <ModalStyle>
+                    Noe gikk galt, klarte ikke laste opp bilde!
+                    <Button onClick={() => setUploadingImageFail(false)} variant="contained"
+                            style={{backgroundColor: colors.core, color: "white"}}>Ok</Button>
+                </ModalStyle>
+            </Modal>
             <ButtonProgress>
                 <StyledIconButton aria-label="Legg til bilde" onClick={handleUpload}>
                     <StyledAddAPhotoRounded/>
@@ -165,17 +190,17 @@ export const ImageGallery: React.FC = () => {
                     </ImageTools>
                     <CloseImage onClick={handleCloseClick} ref={refCloseButton}/>
                     <ImageToolbar>
-                    {visibleToolbar &&
-                    <Toolbar>
-                        <IconButton aria-label="Fjern" onClick={() => sanityRemoveFile(fullViewImage)}>
-                            <DeleteRounded /> Fjern
-                        </IconButton>
-                        <IconButton aria-label="Slett" onClick={() => sanityDeleteFile(fullViewImage)}>
-                            <DeleteRounded style={{color: colors.red}}/> Slett
-                        </IconButton>
-                    </Toolbar>
-                    }
-                    <SanityImage image={fullViewImage} quality={100} width={700}/>
+                        {visibleToolbar &&
+                        <Toolbar>
+                            <IconButton aria-label="Fjern" onClick={() => sanityRemoveFile(fullViewImage)}>
+                                <DeleteRounded/> Fjern
+                            </IconButton>
+                            <IconButton aria-label="Slett" onClick={() => sanityDeleteFile(fullViewImage)}>
+                                <DeleteRounded style={{color: colors.red}}/> Slett
+                            </IconButton>
+                        </Toolbar>
+                        }
+                        <SanityImage image={fullViewImage} quality={100} width={700}/>
                     </ImageToolbar>
                 </FullWidthImage>
             </BackDrop>
@@ -354,5 +379,29 @@ const CloseImage = styled.div`
   width: 100%;
   height: 100%;
   cursor: pointer;
+`;
+
+const ModalStyle = styled.div`
+&&{
+  position: absolute;
+  width: 90%;
+  max-width: 300px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border-radius: 2rem;
+  box-shadow: ${colors.shadowCore};
+  padding: 2rem;
+  outline: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  button {
+    margin-top: 2rem;
+  }
+}
 `;
 
