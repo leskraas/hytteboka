@@ -8,7 +8,6 @@ import imageGallery from './documents/imageGallery';
 // We import object and document schemas
 import page from './documents/page';
 import route from './documents/route';
-import siteConfig from './documents/siteConfig';
 import blockContent from './objects/blockContent'
 import userGuide from './documents/userGuide';
 import hero from './objects/hero';
@@ -28,7 +27,6 @@ export default createSchema({
     userGuide,
     page,
     imageGallery,
-    siteConfig,
     route,
     // When added to this list, object types can be used as
     // { type: 'typename' } in other document schemas

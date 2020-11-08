@@ -9,16 +9,8 @@ const hiddenDocTypes = listItem =>
 
 export default () =>
     S.list()
-        .title('Site')
+        .title('Fagerturn')
         .items([
-            S.listItem()
-                .title('Site config')
-                .child(
-                    S.editor()
-                        .id('config')
-                        .schemaType('site-config')
-                        .documentId('global-config')
-                ),
             S.listItem()
                 .title('Bildegalleri')
                 .icon(FaRegImages)
