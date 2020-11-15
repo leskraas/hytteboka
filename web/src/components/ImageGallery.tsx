@@ -11,6 +11,7 @@ import {nanoid} from "nanoid";
 import {usePrevious} from "../utils/hooks/usePrevious";
 import {SanityImage} from "../utils/SanityImage";
 import {FadeIn} from "../utils/FadeIn";
+import {useHistory} from "react-router";
 
 
 const imageGalleryQuery = groq`
@@ -37,6 +38,7 @@ export const ImageGallery: React.FC = () => {
     const [uploadingImageFail, setUploadingImageFail] = useState<boolean>(false);
     const [uploaded, setUploaded] = useState<boolean>(true);
     const inputRef = React.useRef<HTMLInputElement>(null);
+    const history = useHistory()
 
     const refCloseButton = useRef(null);
     const prevImage = usePrevious(image);
@@ -49,6 +51,7 @@ export const ImageGallery: React.FC = () => {
             sanityClient.fetch(imageGalleryQuery)
                 .then((data: { images: IImage[] }) => {
                     setImageGallery(data.images)
+                    history.go(0) // refresh page
                 })
                 .catch((err) => {
                     setUploadingImageFail(true);
