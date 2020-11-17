@@ -51,7 +51,6 @@ export const ImageGallery: React.FC = () => {
             sanityClient.fetch(imageGalleryQuery)
                 .then((data: { images: IImage[] }) => {
                     setImageGallery(data.images)
-                    history.go(0) // refresh page
                 })
                 .catch((err) => {
                     setUploadingImageFail(true);
@@ -80,6 +79,7 @@ export const ImageGallery: React.FC = () => {
             setFullViewImage(undefined);
             setVisibleToolbar(false);
             setUploaded(true);
+            history.go(0) // refresh page
         }).catch((err) => {
             setUploadingImageFail(true);
             console.log('error', err);
@@ -91,6 +91,7 @@ export const ImageGallery: React.FC = () => {
             setFullViewImage(undefined);
             setVisibleToolbar(false);
             setUploaded(true);
+            history.go(0) // refresh page
             sanityClient.delete(imageFile.asset._id).catch(err => console.log('gikk ikke å slette', err))
         }).catch((err) => {
             setUploadingImageFail(true);
@@ -121,6 +122,7 @@ export const ImageGallery: React.FC = () => {
             .then(() => {
                 setUploadingImage(false);
                 setUploaded(true);
+                history.go(0) // refresh page
             }).catch(() => {
                 setUploadingImage(false);
                 setUploaded(false);
