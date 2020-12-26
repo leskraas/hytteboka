@@ -61,7 +61,7 @@ module.exports = env => {
                 skipWaiting: true,
                 runtimeCaching: [{
                     urlPattern: /\.(?:png|jpg|jpeg|svg)$/,
-                    handler: 'CacheFirst',
+                    handler: 'StaleWhileRevalidate',
                     options: {
                         cacheName: 'images',
                         expiration: {
