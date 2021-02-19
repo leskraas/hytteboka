@@ -15,7 +15,7 @@ export const AllUserGuide: React.FC = () => {
 
     useEffect(() => {
         sanityClient.fetch(
-            `*[_type == "userGuide"]{
+            `*[!(_id in path('drafts.**')) && _type == "userGuide"]{
                         title,
                         slug,
                         description,

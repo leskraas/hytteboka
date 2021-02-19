@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import {urlFor} from "src/utils/imageUrlBuilder";
 import sanityClient from "../client";
 import {useParams} from 'react-router-dom';
 import {IUserGuide, UserGuideStep} from "../types/sanity";
@@ -35,6 +36,9 @@ export const OneUserGuide: React.FC = () => {
                         _id,
                         url
                     }
+                },
+                video{
+                    asset->{url}
                 }
             }
          }[0]
@@ -53,6 +57,7 @@ export const OneUserGuide: React.FC = () => {
             <Typography gutterBottom variant="h1" component="h1">
                 {userGuideData?.title}
             </Typography>
+            {console.log(userGuideData)}
             {userGuideData?.mainImage &&
             <ImageWrapper>
                 <SanityImage image={userGuideData.mainImage} quality={100}/>
@@ -69,6 +74,7 @@ export const OneUserGuide: React.FC = () => {
                                         {step.step}
                                     </Typography>
                                     {step.image && <StepImage image={step.image} width={300} height={300}/>}
+                                    {step.video && <video controls width="100%" src={step.video.asset.url}/>}
                                 </li>
                             );
                         }

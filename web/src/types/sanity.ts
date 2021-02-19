@@ -6,6 +6,7 @@ export interface Slug {
 export interface UserGuideStep {
     step: string,
     image: IImage,
+    video: IVideo,
 }
 
 export interface IImage {
@@ -15,6 +16,13 @@ export interface IImage {
     asset: Asset;
     crop?: Crop;
     hotspot?: Hotspot;
+}
+
+export interface IVideo {
+    _type: 'image';
+    _id?: string;
+    _key: string;
+    asset: { url: string, _id: string };
 }
 
 interface Asset {
@@ -79,6 +87,7 @@ export interface ITextSection {
 interface SerializersType {
     [key: string]: React.ReactNode;
 }
+
 export interface Serializers {
     types: SerializersType;
     marks?: object;
