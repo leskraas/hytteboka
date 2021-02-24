@@ -29,6 +29,7 @@ interface Asset {
     _ref: string;
     _type: 'reference';
     _id?: string;
+    _createdAt?:string;
 }
 
 interface Crop {

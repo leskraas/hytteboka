@@ -39,5 +39,11 @@ export default {
             type: 'array',
             of: [{type: 'userGuideStep'}]
         },
+        {
+            name: "order",
+            title: "Order",
+            type: "number",
+            hidden: true,
+        },
     ],
 }

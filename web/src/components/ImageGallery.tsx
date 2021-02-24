@@ -22,7 +22,8 @@ const imageGalleryQuery = groq`
             _key,
             asset->{
                 _id,
-                url
+                url,
+                _createdAt
              }
         },
     }
@@ -50,8 +51,9 @@ export const ImageGallery: React.FC = () => {
         if (uploaded) {
             sanityClient.fetch(imageGalleryQuery)
                 .then((data: { images: IImage[] }) => {
-                    setImageGallery(data.images)
-                })
+                    setImageGallery((data.images).sort(function(a, b) {
+                        return (a.asset._createdAt > b.asset._createdAt) ? -1 : ((a.asset._createdAt < b.asset._createdAt) ? 1 : 0);
+                    }))})
                 .catch((err) => {
                     setUploadingImageFail(true);
                     console.log('error', err);

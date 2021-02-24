@@ -24,7 +24,8 @@
     "prop-types": "^15.6",
     "react": "^16.2",
     "react-dom": "^16.2",
-    "react-icons": "^3.11.0"
+    "react-icons": "^3.11.0",
+    "sanity-plugin-order-documents": "^0.0.12"
   },
   "devDependencies": {}
 }
